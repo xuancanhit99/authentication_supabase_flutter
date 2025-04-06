@@ -1,12 +1,9 @@
-import 'package:authentication_supabase_flutter/pages/login_page.dart';
-import 'package:authentication_supabase_flutter/pages/profile_page.dart';
-import 'package:authentication_supabase_flutter/pages/register_page.dart';
+// lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'package:authentication_supabase_flutter/auth/auth_gate.dart';
-
+import 'package:authentication_supabase_flutter/app.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:authentication_supabase_flutter/injection_container.dart' as di;
 import 'core/constants.dart';
 
 void main() async {
@@ -14,6 +11,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await dotenv.load(fileName: ".env");
     await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+    await di.configureDependencies();
     runApp(const MyApp());
   } catch (e) {
     debugPrint('Error initializing app: $e');
@@ -25,19 +23,5 @@ void main() async {
   }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const AuthGate(),
-      routes: {
-        '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage(),
-        '/profile': (context) => const ProfilePage(),
-      },
-    );
-  }
-}
+// Helper to access Supabase client instance easily
+final supabase = Supabase.instance.client;
