@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bill Splitter'),
+        title: const Text('Home Page'),
         actions: [
           // Only show logout if authenticated
           if (authState is AuthAuthenticated)
